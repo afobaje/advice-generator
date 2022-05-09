@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 
 function App() {
   let [advice, setAdvice] = useState("");
+  let [disabled,setDisabled]=useState(false)
   useEffect(() => {
     axios.get("https://api.adviceslip.com/advice").then((res) => {
       setAdvice(res.data.slip);
@@ -15,10 +16,12 @@ function App() {
   }, []);
   console.log(advice)
   function getAdvice() {
+    setDisabled(true)
     axios.get("https://api.adviceslip.com/advice").then((res) => {
       setAdvice(res.data.slip);
       console.log(res);
     });
+    setDisabled(false)
   }
   return (
     <div className="App">
@@ -30,9 +33,10 @@ function App() {
           <img src={Divider} alt="" />
         </span>
       </div>
-      <div className="btn">
-          <input type="image" src={Icon} onClick={()=>getAdvice()} alt="Submit" width="30" height="30" />
-        </div>
+      <button className="btn" disabled={disabled}>
+        <img src={Icon} alt="" width={30} height={30} onClick={()=>getAdvice()} />
+      </button>
+      
       <footer>
         <span className="adv">
           Challenge by <a href="#" className="put">FrontEnd Mentor</a>. Coded by{" "}
